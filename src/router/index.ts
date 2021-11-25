@@ -16,7 +16,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'LoginPage',
     component: () => import(/* webpackChunkName: "login-page" */ '../views/auth/LoginPage.vue'),
     meta: {
-      layout: AuthLayout
+      layout: AuthLayout,
+      title: 'HRIS'
     }
   },
   {
@@ -24,7 +25,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'RegisterPage',
     component: () => import(/* webpackChunkName: "register-page" */ '../views/auth/RegisterPage.vue'),
     meta: {
-      layout: AuthLayout
+      layout: AuthLayout,
+      title: 'HRIS'
     }
   },
   {
@@ -32,7 +34,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'RegistrationFormPage',
     component: () => import(/* webpackChunkName: "registration-form" */ '../views/auth/RegistrationFormPage.vue'),
     meta: {
-      layout: RegistrationLayout
+      layout: RegistrationLayout,
+      title: 'HRIS | Registration Form'
     }
   },
   {
@@ -40,7 +43,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SaDashboard',
     component: () => import(/* webpackChunkName: "sa-dashboard" */ '../views/superadmin/DashboardPage.vue'),
     meta: {
-      layout: SuperadminLayout
+      layout: SuperadminLayout,
+      title: 'HRIS | SA - Dashboard'
     }
   },
   {
@@ -48,7 +52,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SaLeaveRequest',
     component: () => import(/* webpackChunkName: "sa-leaves" */ '../views/superadmin/requests/LeaveRequestsPage.vue'),
     meta: {
-      layout: SuperadminLayout
+      layout: SuperadminLayout,
+      title: 'HRIS | SA - Leave Requests'
     }
   },
   {
@@ -56,7 +61,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SaOvertimeRequest',
     component: () => import(/* webpackChunkName: "sa-overtimes" */ '../views/superadmin/requests/OvertimeRequestsPage.vue'),
     meta: {
-      layout: SuperadminLayout
+      layout: SuperadminLayout,
+      title: 'HRIS | SA - Overtime Requests'
     }
   },
   {
@@ -64,7 +70,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SaTripRequest',
     component: () => import(/* webpackChunkName: "sa-trips" */ '../views/superadmin/requests/BusinessTripRequestPage.vue'),
     meta: {
-      layout: SuperadminLayout
+      layout: SuperadminLayout,
+      title: 'HRIS | SA - Trip Requests'
     }
   },
   {
@@ -72,7 +79,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SaBranches',
     component: () => import(/* webpackChunkName: "sa-branches" */ '../views/superadmin/settings/BranchesPage.vue'),
     meta: {
-      layout: SuperadminLayout
+      layout: SuperadminLayout,
+      title: 'HRIS | SA - Branches'
     }
   },
   {
@@ -80,7 +88,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SaDepartments',
     component: () => import(/* webpackChunkName: "sa-departments" */ '../views/superadmin/settings/DepartmentPage.vue'),
     meta: {
-      layout: SuperadminLayout
+      layout: SuperadminLayout,
+      title: 'HRIS | SA - Departments'
     }
   },
   {
@@ -88,7 +97,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SaRoles',
     component: () => import(/* webpackChunkName: "sa-roles" */ '../views/superadmin/settings/RolePage.vue'),
     meta: {
-      layout: SuperadminLayout
+      layout: SuperadminLayout,
+      title: 'HRIS | SA - Roles'
     }
   },
   {
@@ -96,7 +106,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SaUser',
     component: () => import(/* webpackChunkName: "sa-user" */ '../views/superadmin/SelectedUserPage.vue'),
     meta: {
-      layout: SuperadminLayout
+      layout: SuperadminLayout,
+      title: 'HRIS | SA - User Profile'
     }
   },
   {
@@ -104,7 +115,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EmDashboard',
     component: () => import(/* webpackChunkName: "em-dashboard'" */ '../views/employee/DashboardPage.vue'),
     meta: {
-      layout: EmployeeLayout
+      layout: EmployeeLayout,
+      title: 'HRIS | Emp - Dashboard'
     }
   },
   {
@@ -112,7 +124,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EmLeaves',
     component: () => import(/* webpackChunkName: "em-leaves'" */ '../views/employee/requests/LeaveRequestPage.vue'),
     meta: {
-      layout: EmployeeLayout
+      layout: EmployeeLayout,
+      title: 'HRIS | Emp - Leave Requests'
     }
   },
   {
@@ -136,7 +149,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EmOvertimes',
     component: () => import(/* webpackChunkName: "em-overtimes'" */ '../views/employee/requests/OvertimeRequestPage.vue'),
     meta: {
-      layout: EmployeeLayout
+      layout: EmployeeLayout,
+      title: 'HRIS | Emp - Overtime Requests'
     }
   },
   {
@@ -160,7 +174,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EmTrips',
     component: () => import(/* webpackChunkName: "em-trips'" */ '../views/employee/requests/TripRequestPage.vue'),
     meta: {
-      layout: EmployeeLayout
+      layout: EmployeeLayout,
+      title: 'HRIS | Emp - Trip Requests'
     }
   },
   {
@@ -168,7 +183,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EmCOE',
     component: () => import(/* webpackChunkName: "em-coe'" */ '../views/employee/requests/COERequestPage.vue'),
     meta: {
-      layout: EmployeeLayout
+      layout: EmployeeLayout,
+      title: 'HRIS | Emp - COE Requests'
     }
   },
   {
@@ -176,7 +192,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SvDashboard',
     component: () => import(/* webpackChunkName: "sv-dashboard" */ '../views/supervisor/DashboardPage.vue'),
     meta: {
-      layout: SupervisorLayout
+      layout: SupervisorLayout,
+      title: 'HRIS | SV - Dashboard'
     }
   },
   {
@@ -184,7 +201,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SvLeaves',
     component: () => import(/* webpackChunkName: "sv-leaves'" */ '../views/supervisor/requests/LeaveRequestPage.vue'),
     meta: {
-      layout: SupervisorLayout
+      layout: SupervisorLayout,
+      title: 'HRIS | SV - Leave Requests'
     }
   },
   {
@@ -192,7 +210,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SvOvertimes',
     component: () => import(/* webpackChunkName: "sv-overtimes'" */ '../views/supervisor/requests/OvertimeRequestPage.vue'),
     meta: {
-      layout: SupervisorLayout
+      layout: SupervisorLayout,
+      title: 'HRIS | SV - Overtime Requests'
     }
   },
   {
@@ -200,7 +219,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SvTrips',
     component: () => import(/* webpackChunkName: "sv-trips'" */ '../views/supervisor/requests/TripRequestPage.vue'),
     meta: {
-      layout: SupervisorLayout
+      layout: SupervisorLayout,
+      title: 'HRIS | SV - Trip Requests'
     }
   },
   {
@@ -208,7 +228,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SvCOE',
     component: () => import(/* webpackChunkName: "sv-coe'" */ '../views/supervisor/requests/COERequestPage.vue'),
     meta: {
-      layout: SupervisorLayout
+      layout: SupervisorLayout,
+      title: 'HRIS | SV - COE Requests'
     }
   },
   {
@@ -216,7 +237,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SvSubsLeaves',
     component: () => import(/* webpackChunkName: "sv-subs-leaves'" */ '../views/supervisor/subs_requests/LeaveRequestPage.vue'),
     meta: {
-      layout: SupervisorLayout
+      layout: SupervisorLayout,
+      title: 'HRIS | SV - Subs Leave Requests'
     }
   },
   {
@@ -224,7 +246,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'SvSubsOvertimes',
     component: () => import(/* webpackChunkName: "sv-subs-overtimes'" */ '../views/supervisor/subs_requests/OvertimeRequestPage.vue'),
     meta: {
-      layout: SupervisorLayout
+      layout: SupervisorLayout,
+      title: 'HRIS | SV - Subs Overtime Requests'
     }
   },
   {
@@ -232,7 +255,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'HrDashboard',
     component: () => import(/* webpackChunkName: "hr-dashboard" */ '../views/humanresource/DashboardPage.vue'),
     meta: {
-      layout: HumanResourceLayout
+      layout: HumanResourceLayout,
+      title: 'HRIS | HR - Dashboard'
     }
   },
   {
@@ -240,7 +264,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'HrLeaves',
     component: () => import(/* webpackChunkName: "hr-leaves" */ '../views/humanresource/requests/LeaveRequestPage.vue'),
     meta: {
-      layout: HumanResourceLayout
+      layout: HumanResourceLayout,
+      title: 'HRIS | HR - Leave Requests'
     }
   },
   {
@@ -248,7 +273,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'HrOvertimes',
     component: () => import(/* webpackChunkName: "hr-overtimes" */ '../views/humanresource/requests/OvertimeRequestPage.vue'),
     meta: {
-      layout: HumanResourceLayout
+      layout: HumanResourceLayout,
+      title: 'HRIS | HR - Overtime Requests'
     }
   },
   {
@@ -256,7 +282,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'HrTrips',
     component: () => import(/* webpackChunkName: "hr-trips" */ '../views/humanresource/requests/BusinessTripRequestPage.vue'),
     meta: {
-      layout: HumanResourceLayout
+      layout: HumanResourceLayout,
+      title: 'HRIS | HR - Trip Requests'
     }
   },
   {
@@ -264,7 +291,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'HrCOE',
     component: () => import(/* webpackChunkName: "hr-coe" */ '../views/humanresource/requests/COERequestPage.vue'),
     meta: {
-      layout: HumanResourceLayout
+      layout: HumanResourceLayout,
+      title: 'HRIS | HR - COE Requests'
     }
   },
   {
@@ -272,7 +300,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdDashboard',
     component: () => import(/* webpackChunkName: "ad-dashboard" */ '../views/administrator/DashboardPage.vue'),
     meta: {
-      layout: AdminLayout
+      layout: AdminLayout,
+      title: 'HRIS | Admin - Dashboard'
     }
   },
   {
@@ -280,7 +309,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdEmpLeaves',
     component: () => import(/* webpackChunkName: "ad-emp-leaves" */ '../views/administrator/leaves/EmployeeLeavePage.vue'),
     meta: {
-      layout: AdminLayout
+      layout: AdminLayout,
+      title: 'HRIS | Admin - Emp Leave Request'
     }
   },
   {
@@ -288,7 +318,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdEmpOvertimes',
     component: () => import(/* webpackChunkName: "ad-emp-overtimes" */ '../views/administrator/overtimes/EmployeeOvertimePage.vue'),
     meta: {
-      layout: AdminLayout
+      layout: AdminLayout,
+      title: 'HRIS | Admin - Emp Overtime Request'
     }
   },
   {
@@ -296,7 +327,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdEmpTrips',
     component: () => import(/* webpackChunkName: "ad-emp-trips" */ '../views/administrator/trips/EmployeeTripPage.vue'),
     meta: {
-      layout: AdminLayout
+      layout: AdminLayout,
+      title: 'HRIS | Admin - Emp Trip Requests'
     }
   },
   {
@@ -304,7 +336,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdSvLeaves',
     component: () => import(/* webpackChunkName: "ad-sv-leaves" */ '../views/administrator/leaves/SupervisorLeavePage.vue'),
     meta: {
-      layout: AdminLayout
+      layout: AdminLayout,
+      title: 'HRIS | Admin - SV Leave Requests'
     }
   },
   {
@@ -312,7 +345,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdSvOvertimes',
     component: () => import(/* webpackChunkName: "ad-sv-overtimes" */ '../views/administrator/overtimes/SupervisorOvertimePage.vue'),
     meta: {
-      layout: AdminLayout
+      layout: AdminLayout,
+      title: 'HRIS | Admin - SV Overtime Requests'
     }
   },
   {
@@ -320,7 +354,8 @@ const routes: Array<RouteRecordRaw> = [
     name: 'AdSvTrips',
     component: () => import(/* webpackChunkName: "ad-sv-trips" */ '../views/administrator/trips/SupervisorTripPage.vue'),
     meta: {
-      layout: AdminLayout
+      layout: AdminLayout,
+      title: 'HRIS | Admin - SV Trip Requests'
     }
   },
 ]
@@ -331,6 +366,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  window.document.title = to.meta.title as string
+
   if (to.name !== 'LoginPage' && !useAuthStore().isAuthenticated) {
     if (to.name == 'RegisterPage') {
       next();

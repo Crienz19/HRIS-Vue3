@@ -1,5 +1,8 @@
 <template>
     <div class="card">
+        <div v-if="personal.isRequestLoading" class="overlay">
+            <i class="fas fa-spinner fa-pulse fa-2x"></i>
+        </div>
         <div class="card-header">
             <h5 class="card-title">Personal Details</h5>
             <div class="card-tools">
@@ -116,6 +119,9 @@
     </div>
 
     <div class="card">
+        <div v-if="personal.isRequestLoading" class="overlay">
+            <i class="fas fa-spinner fa-pulse fa-2x"></i>
+        </div>
         <div class="card-header">
             <h5 class="card-title">Company Details</h5>
             <div class="card-tools">
@@ -151,10 +157,11 @@
                     </tr>
                     <tr>
                         <td>Branch</td>
-                        <td v-if="!companyIsEdit" class="text-bold">{{ employee.branch_id }}</td>
+                        <td v-if="!companyIsEdit" class="text-bold">{{ employee.branch?.display_name }}</td>
                         <td v-else>
                             <select type="text" v-model="employee.branch_id" class="form-control form-control-sm">
-                                <option value="">Select Branch</option>
+                                <option>Select Branch</option>
+                                <option v-for="branch in branches" :key="branch.id" :value="branch.id">{{ branch.display_name }}</option>
                             </select>
                         </td>
                     </tr>
@@ -167,10 +174,11 @@
                     </tr>
                     <tr>
                         <td>Department</td>
-                        <td v-if="!companyIsEdit" class="text-bold">{{ employee.department_id }}</td>
+                        <td v-if="!companyIsEdit" class="text-bold">{{ employee.department?.display_name }}</td>
                         <td v-else>
                             <select type="text" v-model="employee.department_id" class="form-control form-control-sm">
-                                <option value="">Select Department</option>
+                                <option>Select Department</option>
+                                <option v-for="dept in departments" :key="dept.id" :value="dept.id">{{ dept.display_name }}</option>
                             </select>
                         </td>
                     </tr>
@@ -190,12 +198,18 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 import { usePersonalStore } from '@/store/employee/personal';
+import { useSettingDepartmentStore } from '@/store/superadmin/settings/department';
+import { useSettingBranchStore } from '@/store/superadmin/settings/branch';
 
 export default defineComponent({
     async setup() {
         const personal = usePersonalStore();
+        const department = useSettingDepartmentStore();
+        const branch = useSettingBranchStore();
 
         const employee = computed(() => personal.getAllPersonalDetails)
+        const departments = computed(() => department.getAllDepartments);
+        const branches = computed(() => branch.getAllBranch);
 
         const isEdit = ref(false);
         const companyIsEdit = ref(false);
@@ -214,6 +228,9 @@ export default defineComponent({
             isEdit,
             companyIsEdit,
             employee,
+            departments,
+            branches,
+            personal,
             updateCompanyDetails,
             updatePersonalDetails
         }

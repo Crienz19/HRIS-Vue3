@@ -1,8 +1,10 @@
 <template>
     <div class="row">
-        Something here
-    </div>
-    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <b>Welcome to Dashboard Page</b>
+            </div>
+        </div>
         <div class="col-3">
             <div class="card">
                 <div class="card-body d-flex justify-content-center">
@@ -40,16 +42,22 @@ import PersonalDetailsComponent from '@/components/employee/dashboard/PersonalDe
 import LeaveCreditDetailsComponent from '@/components/employee/dashboard/LeaveCreditDetailsComponent.vue';
 import { usePersonalStore } from '@/store/employee/personal';
 import { useAuthStore } from '@/store/auth';
+import { useSettingBranchStore } from '@/store/superadmin/settings/branch';
+import { useSettingDepartmentStore } from '@/store/superadmin/settings/department';
 
 export default defineComponent({
     setup() {
         const auth = useAuthStore();
         const personal = usePersonalStore();
+        const department = useSettingDepartmentStore();
+        const branch = useSettingBranchStore();
 
         const user = computed(() => auth.getAuthenticatedUser)
 
         onBeforeMount(async () => {
             await personal.loadPersonalDetails();
+            await department.loadAllDepartment();
+            await branch.loadAllBranches();
         })
 
 

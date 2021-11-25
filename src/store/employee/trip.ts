@@ -40,10 +40,12 @@ export const useEmployeeTripStore = defineStore({
     },
     actions: {
         async loadEmployeeTripRequests() : Promise<void> {
-            this.isRequestLoading = true;
-            const response = await http.get('/api/em/trips');
-            this.trips = response.data.data;
-            this.isRequestLoading = false;
+            if(this.trips.length == 0) {
+                this.isRequestLoading = true;
+                const response = await http.get('/api/em/trips');
+                this.trips = response.data.data;
+                this.isRequestLoading = false;
+            }
         },
         async setComponentTo(component : string) {
             this.active_component = component;

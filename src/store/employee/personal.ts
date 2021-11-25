@@ -4,6 +4,7 @@ import { AxiosError } from "axios";
 import { defineStore } from "pinia";
 import { SettingBranchTypes } from "../superadmin/settings/branch";
 import { SettingDepartmentTypes } from "../superadmin/settings/department";
+import { UserCreditTypes } from "../superadmin/user";
 
 export interface EmployeePersonalTypes {
     user_id: number,
@@ -57,15 +58,43 @@ export interface EmployeeWithBranchAndDepartmentTypes {
     branch: SettingBranchTypes
 }
 
+export interface EmployeeWithBranchAndDepartmentAndCreditTypes {
+    user_id: number,
+    first_name: string,
+    middle_name: string,
+    last_name: string,
+    birth_date: string,
+    civil_status: string,
+    present_address: string,
+    permanent_address: string,
+    contact_no_1: string,
+    contact_no_2: string,
+    tin: string,
+    sss: string,
+    pagibig: string,
+    philhealth: string,
+    branch_id: number,
+    skype_id: string,
+    department_id: number,
+    position: string,
+    employee_id: string,
+    date_hired: string,
+    created_at: string,
+    updated_at: string,
+    department: SettingDepartmentTypes,
+    branch: SettingBranchTypes,
+    credits: UserCreditTypes
+}
+
 export const usePersonalStore = defineStore({
     id: 'employee_personal',
     state: () => ({
-        personal: {} as EmployeePersonalTypes,
+        personal: {} as EmployeeWithBranchAndDepartmentAndCreditTypes,
         isRequestLoading: false,
         errorBag: {} as ErrorTypes
     }),
     getters: {
-        getAllPersonalDetails() : EmployeePersonalTypes {
+        getAllPersonalDetails() : EmployeeWithBranchAndDepartmentAndCreditTypes {
             return this.personal
         },
         getErrors() : any {
@@ -78,8 +107,12 @@ export const usePersonalStore = defineStore({
     },
     actions: {
         async loadPersonalDetails() : Promise<void> {
-            const response = await http.get('/api/getUserPersonalDetails');
-            this.personal = response.data;
+            if (Object.entries(this.personal).length == 0) { 
+                this.isRequestLoading = true;
+                const response = await http.get('/api/getUserPersonalDetails');
+                this.personal = response.data;
+                this.isRequestLoading = false;
+            }
         },
         async registerPersonalDetails(data : any) : Promise<void> {
             try {

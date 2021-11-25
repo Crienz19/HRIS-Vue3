@@ -37,7 +37,7 @@
             <!-- Add icons to the links using the .nav-icon class
                 with font-awesome or any other icon font library -->
             <li class="nav-item">
-                <router-link tag="a" to="/sv/dashboard" class="nav-link" :class="(router.currentRoute.value.path === '/em/dashboard') ? 'active' : ''">
+                <router-link tag="a" to="/sv/dashboard" class="nav-link" :class="(router.currentRoute.value.path === '/sv/dashboard') ? 'active' : ''">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
                         Dashboard
