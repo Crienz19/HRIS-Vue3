@@ -78,12 +78,17 @@
                                     </template>
                                 </td>
                                 <td>
-                                    <button @click="editLeaveRequest(request.id)" class="btn btn-primary btn-xs mr-1">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button @click="deleteRequest(request.id, key)" class="btn btn-danger btn-xs mr-1">
-                                        <i class="fas fa-times"></i>
-                                    </button>
+                                    <template v-if="request.final_approval == 'Pending'">
+                                        <button @click="editLeaveRequest(request.id)" class="btn btn-primary btn-xs mr-1">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                        <button @click="deleteRequest(request.id, key)" class="btn btn-danger btn-xs mr-1">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </template>
+                                    <template>
+                                        <p>Not Applicable</p>
+                                    </template>
                                 </td>
                             </tr>
                         </tbody>

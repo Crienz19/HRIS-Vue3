@@ -61,10 +61,15 @@
                                     </template>
                                 </td>
                                 <td>
-                                    <button @click="editRequest(request.id)" class="btn btn-primary btn-xs mr-1">
-                                        <i class="fas fa-search"></i></button>
-                                    <button @click="deleteRequest(request.id, key)" class="btn btn-danger btn-xs mr-1">
-                                        <i class="fas fa-times"></i></button>
+                                    <template v-if="request.status == 'Pending'">
+                                        <button @click="editRequest(request.id)" class="btn btn-primary btn-xs mr-1">
+                                            <i class="fas fa-search"></i></button>
+                                        <button @click="deleteRequest(request.id, key)" class="btn btn-danger btn-xs mr-1">
+                                            <i class="fas fa-times"></i></button>
+                                    </template>
+                                    <template v-else>
+                                        <p>Not applicable</p>
+                                    </template>
                                 </td>
                             </tr>
                         </tbody>
