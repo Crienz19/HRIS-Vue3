@@ -86,7 +86,7 @@
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </template>
-                                    <template>
+                                    <template v-else>
                                         <p>Not Applicable</p>
                                     </template>
                                 </td>
