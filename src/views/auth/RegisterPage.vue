@@ -13,6 +13,11 @@
             <div class="card-body register-card-body">
             <p class="login-box-msg">Register a new membership</p>
 
+            <div v-if="errorMessage" class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <small>{{ errorMessage }}</small>
+            </div>
+
             <form @submit.prevent="register()">
                 <div class="input-group mb-3">
                     <input :class="errors.hasOwnProperty('name') ? 'is-invalid' : ''" v-model="registerForm.name" type="text" class="form-control" placeholder="Full name">
@@ -100,6 +105,7 @@ export default defineComponent({
         });
 
         const errors = computed(() => auth.getAllErrors);
+        const errorMessage = computed(() => auth.getErrorMessage);
 
         const register = async () => {
             try {
@@ -119,6 +125,7 @@ export default defineComponent({
             auth,
             errors,
             registerForm,
+            errorMessage,
             register,
             goToLoginPage
         }
