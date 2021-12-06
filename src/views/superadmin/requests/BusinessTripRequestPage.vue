@@ -14,13 +14,13 @@
 
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                        <input v-model="tripSearch" type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                        <div class="input-group-append">
+                        <!-- <div class="input-group-append">
                             <button type="submit" class="btn btn-default">
                                 <i class="fas fa-search"></i>
                             </button>
-                        </div>
+                        </div> -->
                         </div>
                     </div>
                 </div>
@@ -50,32 +50,40 @@
                             </tr>
                         </tbody>
                         <tbody v-else class="text-center">
-                            <tr v-for="(trip, key) in trips" :key="trip.id">
-                                <td class="text-left">{{ trip.id }}</td>
-                                <td>{{ trip.employee?.first_name }}</td>
-                                <td>{{ trip.employee?.last_name }}</td>
-                                <td>{{ trip.date_from }}</td>
-                                <td>{{ trip.date_to }}</td>
-                                <td>{{ trip.time_in.standard }}</td>
-                                <td>{{ trip.time_out.standard }}</td>
-                                <td>{{ trip.destination_from }}</td>
-                                <td>{{ trip.destination_to }}</td>
-                                <td>
-                                    <select @change="changeTripStatus(trip, key, $event.target.value)" class="form-control form-control-xs">
-                                        <option selected>{{ trip.status }}</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Acknowledged">Acknowledged</option>
-                                    </select>
-                                </td>
-                                <td>{{ trip.created_at }}</td>
-                                <td>
-                                    <button @click="selectTrip(trip)" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-xs mr-1">
-                                        <i class="fas fa-search"></i></button>
+                            <template v-if="trips.length > 0">
+                                <tr v-for="(trip, key) in trips" :key="trip.id">
+                                    <td class="text-left">{{ trip.id }}</td>
+                                    <td>{{ trip.employee?.first_name }}</td>
+                                    <td>{{ trip.employee?.last_name }}</td>
+                                    <td>{{ trip.date_from }}</td>
+                                    <td>{{ trip.date_to }}</td>
+                                    <td>{{ trip.time_in.standard }}</td>
+                                    <td>{{ trip.time_out.standard }}</td>
+                                    <td>{{ trip.destination_from }}</td>
+                                    <td>{{ trip.destination_to }}</td>
+                                    <td>
+                                        <select @change="changeTripStatus(trip, key, $event.target.value)" class="form-control form-control-xs">
+                                            <option selected>{{ trip.status }}</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Acknowledged">Acknowledged</option>
+                                        </select>
+                                    </td>
+                                    <td>{{ trip.created_at }}</td>
+                                    <td>
+                                        <button @click="selectTrip(trip)" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-xs mr-1">
+                                            <i class="fas fa-search"></i></button>
 
-                                    <button @click="deleteTripRequest(trip.id, key)" class="btn btn-danger btn-xs mr-1">
-                                        <i class="fas fa-times"></i></button>
-                                </td>
-                            </tr>
+                                        <button @click="deleteTripRequest(trip.id, key)" class="btn btn-danger btn-xs mr-1">
+                                            <i class="fas fa-times"></i></button>
+                                    </td>
+                                </tr>
+                            </template>
+
+                            <template v-else>
+                                <tr>
+                                    <td colspan="12" class="text-center">No data to display</td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </div>
@@ -138,7 +146,14 @@ import * as toastr from 'toastr';
 export default defineComponent({
     setup() {
         const trip = useSuperadminTripStore();
-        const trips = computed(() => trip.getAllFiledTrips)
+
+        const tripSearch = ref("");
+
+        const trips = computed(() => {
+            return trip.getAllFiledTrips.filter((trip) => {
+                return (trip.employee.last_name.toLowerCase().match(tripSearch.value));
+            });
+        })
         
         const selectedTrip = ref({
             first_name: '',
@@ -185,6 +200,7 @@ export default defineComponent({
             trip,
             trips,
             selectedTrip,
+            tripSearch,
             selectTrip,
             changeTripStatus,
             deleteTripRequest

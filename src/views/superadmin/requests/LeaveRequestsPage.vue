@@ -14,13 +14,13 @@
 
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                        <input v-model="leaveSearch" type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                        <div class="input-group-append">
+                        <!-- <div class="input-group-append">
                             <button type="submit" class="btn btn-default">
                                 <i class="fas fa-search"></i>
                             </button>
-                        </div>
+                        </div> -->
                         </div>
                     </div>
                 </div>
@@ -49,40 +49,47 @@
                             </tr>
                         </tbody>
                         <tbody v-else>
-                            <tr class="text-center" v-for="(leave, key) in leaves" :key="leave.id">
-                                <td class="text-left">{{ leave.id }}</td>
-                                <td>{{ leave.employee.first_name }}</td>
-                                <td>{{ leave.employee.last_name }}</td>
-                                <td>{{ leave.type }}</td>
-                                <td>{{ leave.pay_type }}</td>
-                                <td>{{ leave.from }}</td>
-                                <td>{{ leave.to }}</td>
-                                <td>
-                                    <select @change="changeRecommendingApproval(leave, key, $event.target.value)" class="form-control form-control-xs">
-                                        <option selected>{{ leave.recommending_approval }}</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Approved">Approved</option>
-                                        <option value="Disapproved">Disapproved</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select @change="changeFinalApproval(leave, key, $event.target.value)" class="form-control form-control-xs">
-                                        <option selected>{{ leave.final_approval }}</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Approved">Approved</option>
-                                        <option value="Disapproved">Disapproved</option>
-                                    </select>
-                                </td>
-                                <td>{{ leave.created_at }}</td>
-                                <td>
-                                    <button @click="selectLeave(leave)" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-xs mr-1">
-                                        <i class="fas fa-search"></i></button>
+                            <template v-if="leaves.length > 0">
+                                <tr class="text-center" v-for="(leave, key) in leaves" :key="leave.id">
+                                    <td class="text-left">{{ leave.id }}</td>
+                                    <td>{{ leave.employee.first_name }}</td>
+                                    <td>{{ leave.employee.last_name }}</td>
+                                    <td>{{ leave.type }}</td>
+                                    <td>{{ leave.pay_type }}</td>
+                                    <td>{{ leave.from }}</td>
+                                    <td>{{ leave.to }}</td>
+                                    <td>
+                                        <select @change="changeRecommendingApproval(leave, key, $event.target.value)" class="form-control form-control-xs">
+                                            <option selected>{{ leave.recommending_approval }}</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Approved">Approved</option>
+                                            <option value="Disapproved">Disapproved</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select @change="changeFinalApproval(leave, key, $event.target.value)" class="form-control form-control-xs">
+                                            <option selected>{{ leave.final_approval }}</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Approved">Approved</option>
+                                            <option value="Disapproved">Disapproved</option>
+                                        </select>
+                                    </td>
+                                    <td>{{ leave.created_at }}</td>
+                                    <td>
+                                        <button @click="selectLeave(leave)" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-xs mr-1">
+                                            <i class="fas fa-search"></i></button>
 
-                                    <button @click="deleteLeave(leave.id, key)" class="btn btn-danger btn-xs">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                        <button @click="deleteLeave(leave.id, key)" class="btn btn-danger btn-xs">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template v-else>
+                                <tr>
+                                    <td colspan="11" class="text-center">No data to display</td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </div>
@@ -146,7 +153,14 @@ import * as toastr from 'toastr';
 export default defineComponent({
     setup() {
         const leave = useSuperadminLeaveStore();
-        const leaves = computed(() => leave.getAllFiledLeaves);
+
+        const leaveSearch = ref("");
+
+        const leaves = computed(() => {
+            return leave.getAllFiledLeaves.filter((leave) => {
+                return (leave.employee.last_name.toLowerCase().match(leaveSearch.value))
+            })
+        });
 
         const selectedLeave = ref({
             first_name: '',
@@ -199,6 +213,7 @@ export default defineComponent({
             leave,
             leaves,
             selectedLeave,
+            leaveSearch,
             changeRecommendingApproval,
             changeFinalApproval,
             selectLeave,

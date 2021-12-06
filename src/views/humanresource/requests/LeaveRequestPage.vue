@@ -11,6 +11,18 @@
            <div class="card">
                <div class="card-header">
                    <h3 class="card-title">Leave Subs</h3>
+
+                   <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                        <input v-model="leaveSearch" type="text" name="table_search" class="form-control float-right" placeholder="Search by last time">
+
+                        <!-- <div class="input-group-append">
+                            <button type="submit" class="btn btn-default">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div> -->
+                        </div>
+                    </div>
                </div>
                <div class="card-body p-0">
                    <table class="table table-sm table-striped text-center">
@@ -133,7 +145,6 @@ export default defineComponent({
     setup() {
         const leave = useHumanResourceLeaveStore();
 
-        const leaves = computed(() => leave.getRecommendedLeaves);
         const selectedKey = ref(0);
         const selectedLeave = ref({
             id: 0,
@@ -149,6 +160,14 @@ export default defineComponent({
             recommending_approval: '',
             final_approval: ''
         });
+        const leaveSearch = ref("");
+
+        const leaves = computed(() => {
+            return leave.getRecommendedLeaves.filter((leave) => {
+                return (leave.employee.last_name.toLowerCase().match(leaveSearch.value));
+            });
+        });
+
 
         const selectThisRequest = (data : SupervisorLeaveTypes, key : number) => {
             selectedLeave.value.id = data.id;
@@ -184,6 +203,7 @@ export default defineComponent({
             leave,
             leaves,
             selectedLeave,
+            leaveSearch,
             selectThisRequest,
             approveThisRequest,
             disapproveThisRequest

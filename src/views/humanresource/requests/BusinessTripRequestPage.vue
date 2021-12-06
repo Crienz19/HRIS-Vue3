@@ -14,13 +14,13 @@
 
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
+                        <input v-model="tripSearch" type="text" name="table_search" class="form-control float-right" placeholder="Search by last name">
+<!-- 
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-default">
                                 <i class="fas fa-search"></i>
                             </button>
-                        </div>
+                        </div> -->
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,6 @@ export default defineComponent({
     setup() {
         const trip = useHumanResourceTripStore();
 
-        const trips = computed(() => trip.getAllTrips)
         const selectedKey = ref(0);
         const selectedTrip = ref({
             id: 0,
@@ -152,6 +151,14 @@ export default defineComponent({
             destination_from: '',
             destination_to: '',
             purpose: ''
+        })
+
+        const tripSearch = ref("");
+
+        const trips = computed(() => {
+            return trip.getAllTrips.filter((trip) => {
+                return (trip.employee.last_name.toLowerCase().match(tripSearch.value));
+            });
         })
 
         const selectTrip = (value : SuperadminTripTypes, key : number) => {
@@ -180,6 +187,7 @@ export default defineComponent({
             trip,
             trips,
             selectedTrip,
+            tripSearch,
             selectTrip,
             acknowledgedSelectedRequest
         }

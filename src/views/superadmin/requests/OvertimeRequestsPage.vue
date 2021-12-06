@@ -14,13 +14,13 @@
 
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                        <input v-model="overtimeSearch" type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                        <div class="input-group-append">
+                        <!-- <div class="input-group-append">
                             <button type="submit" class="btn btn-default">
                                 <i class="fas fa-search"></i>
                             </button>
-                        </div>
+                        </div> -->
                         </div>
                     </div>
                 </div>
@@ -48,30 +48,37 @@
                             </tr>
                         </tbody>
                         <tbody v-else>
-                            <tr v-for="(overtime, key) in overtimes" :key="overtime.id">
-                                <td>{{ overtime.id }}</td>
-                                <td>{{ overtime.employee.first_name }}</td>
-                                <td>{{ overtime.employee.last_name }}</td>
-                                <td>{{ overtime.date }}</td>
-                                <td>{{ overtime.from.standard }}</td>
-                                <td>{{ overtime.to.standard }}</td>
-                                <td>{{ overtime.reason }}</td>
-                                <td class="text-center">
-                                    <select @change="changeOvertimeStatus(overtime, key, $event.target.value)" class="form-control form-control-xs">
-                                        <option selected>{{ overtime.status }}</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Approved">Approved</option>
-                                        <option value="Disapproved">Disapproved</option>
-                                    </select>
-                                </td>
-                                <td>{{ overtime.created_at }}</td>
-                                <td>
-                                    <button @click="selectOvertime(overtime)" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-xs mr-1">
-                                        <i class="fas fa-search"></i></button>
-                                    <button @click="deleteOvertime(overtime.id, key)" class="btn btn-danger btn-xs">
-                                        <i class="fas fa-times"></i></button>
-                                </td>
-                            </tr>
+                            <template v-if="overtimes.length > 0">
+                                <tr v-for="(overtime, key) in overtimes" :key="overtime.id">
+                                    <td>{{ overtime.id }}</td>
+                                    <td>{{ overtime.employee.first_name }}</td>
+                                    <td>{{ overtime.employee.last_name }}</td>
+                                    <td>{{ overtime.date }}</td>
+                                    <td>{{ overtime.from.standard }}</td>
+                                    <td>{{ overtime.to.standard }}</td>
+                                    <td>{{ overtime.reason }}</td>
+                                    <td class="text-center">
+                                        <select @change="changeOvertimeStatus(overtime, key, $event.target.value)" class="form-control form-control-xs">
+                                            <option selected>{{ overtime.status }}</option>
+                                            <option value="Pending">Pending</option>
+                                            <option value="Approved">Approved</option>
+                                            <option value="Disapproved">Disapproved</option>
+                                        </select>
+                                    </td>
+                                    <td>{{ overtime.created_at }}</td>
+                                    <td>
+                                        <button @click="selectOvertime(overtime)" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-xs mr-1">
+                                            <i class="fas fa-search"></i></button>
+                                        <button @click="deleteOvertime(overtime.id, key)" class="btn btn-danger btn-xs">
+                                            <i class="fas fa-times"></i></button>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template v-else>
+                                <tr>
+                                    <td colspan="11" class="text-center">No data to display</td>
+                                </tr>
+                            </template>
                         </tbody>
                     </table>
                 </div>
@@ -123,7 +130,14 @@ import * as toastr from 'toastr';
 export default defineComponent({
     setup() {
         const overtime = useSuperadminOvertimeStore();
-        const overtimes = computed(() => overtime.getAllFiledOvertimes);
+        
+        const overtimeSearch = ref("");
+
+        const overtimes = computed(() => {
+            return overtime.getAllFiledOvertimes.filter((overtime) => {
+                return (overtime.employee.last_name.toLowerCase().match(overtimeSearch.value));
+            });
+        });
 
         const selectedOvertime = ref({
             first_name: '',
@@ -164,6 +178,7 @@ export default defineComponent({
             overtime,
             overtimes,
             selectedOvertime,
+            overtimeSearch,
             selectOvertime,
             changeOvertimeStatus,
             deleteOvertime

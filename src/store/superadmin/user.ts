@@ -49,6 +49,9 @@ export const useUserStore = defineStore({
         }
     },
     actions: {
+        async searchByEmail(email: string) : Promise<void> {
+            await this.users.filter(e => e.email == email)
+        },
         async loadAllPortalUsers() : Promise<void> {
             if(this.users.length == 0) {
                 this.isLoading = true;

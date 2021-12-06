@@ -11,6 +11,17 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Trips</h3>
+                    <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                        <input v-model="tripSearch" type="text" name="table_search" class="form-control float-right" placeholder="Search by last name">
+
+                        <!-- <div class="input-group-append">
+                            <button type="submit" class="btn btn-default">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div> -->
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body p-0">
                     <table class="table table-hovered table-striped text-sm">
@@ -69,12 +80,18 @@
 <script lang="ts">
 import { useAdminSvTripStore } from '@/store/administrator/s_trip'
 import { SuperadminTripTypes } from '@/store/superadmin/trip';
-import { computed, defineComponent, onBeforeMount } from 'vue'
+import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 
 export default defineComponent({
     setup() {
         const trip = useAdminSvTripStore();
-        const trips = computed(() => trip.getAllTripRequest);
+
+        const tripSearch = ref("");
+        const trips = computed(() => {
+            return trip.getAllTripRequest.filter((trip) => {
+                return (trip.employee.last_name.toLowerCase().match(tripSearch.value))
+            })
+        });
 
         const selectTrip = (trip : SuperadminTripTypes, key : number) => {
             console.log(trip, key);
@@ -87,6 +104,7 @@ export default defineComponent({
         return {
             trip,
             trips,
+            tripSearch,
             selectTrip
         }
     },

@@ -9,6 +9,17 @@
             <div class="card">
                <div class="card-header">
                    <h3 class="card-title">Leave Subs</h3>
+                   <div class="card-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                        <input v-model="leaveSearch" type="text" name="table_search" class="form-control float-right" placeholder="Search by last name">
+
+                        <!-- <div class="input-group-append">
+                            <button type="submit" class="btn btn-default">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div> -->
+                        </div>
+                    </div>
                </div>
                <div class="card-body p-0">
                    <table class="table table-sm table-striped text-center">
@@ -129,7 +140,14 @@ import { computed, defineComponent, onMounted, ref } from 'vue'
 export default defineComponent({
     setup() {
         const leave = useAdminSvLeaveStore();
-        const leaves = computed(() => leave.getAllLeaveRequest);
+        
+        const leaveSearch = ref("");
+        
+        const leaves = computed(() => {
+            return leave.getAllLeaveRequest.filter((leave) => {
+                return (leave.employee.last_name.toLowerCase().match(leaveSearch.value))
+            })
+        });
         const selectedKey = ref(0);
         const selectedLeave = ref({
             id: 0,
@@ -181,6 +199,7 @@ export default defineComponent({
             leaves,
             selectedLeave,
             selectedKey,
+            leaveSearch,
             selectThisRequest,
             approveThisRequest,
             disapproveThisRequest

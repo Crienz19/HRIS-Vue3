@@ -8,13 +8,13 @@
 
             <div class="card-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                <input v-model="userSearch" type="text" name="table_search" class="form-control float-right" placeholder="Search by email">
 
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+                    <!-- <div class="input-group-append">
+                        <button @click="searchUser()" type="submit" class="btn btn-default">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -41,38 +41,45 @@
                     </tr>
                 </tbody>
                 <tbody v-else>
-                    <tr v-for="(user, key) in registeredUsers" :key="user.id">
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>
-                            <select @change="setUserRole(user.id, $event.target.value, key)" class="form-control form-control-xs">
-                                <option selected>{{ user.role }}</option>
-                                <option v-for="role in registeredRole" :key="role.id" :value="role.name">{{ role.display_name }}</option>
-                            </select>
-                        </td>
-                        <td>
-                            <i v-if="user.isActivated" class="fas fa-check text-success"></i>
-                            <i v-else class="fas fa-times text-danger"></i>
-                        </td>
-                        <td>
-                            <i v-if="user.isFilled" class="fas fa-check text-success"></i>
-                            <i v-else class="fas fa-times text-danger"></i>
-                        </td>
-                        <td>{{ user.created_at }}</td>
-                        <td>
-                            <button v-if="user.employee" @click="selectThisUser(user)" data-toggle="modal" data-target="#modal-personal" class="btn btn-success btn-xs mr-1">
-                                <i class="fas fa-search"></i></button>
-                            <button @click="setToDefaultPassword(user.id)" class="btn btn-warning btn-xs mr-1">
-                                <i class="fas fa-redo"></i></button>
-                            <button @click="selectThisCredit(user?.credits)" data-toggle="modal" data-target="#modal-leave-credits" class="btn btn-primary btn-xs mr-1">
-                                <i class="fas fa-list-alt"></i></button>
-                            <button v-if="user.isActivated == false" @click="setUserToActive(user.id, key)" class="btn btn-success btn-xs mr-1">
-                                <i class="fas fa-unlock"></i></button>
-                            <button v-if="user.isActivated == true" @click="setUserToInactive(user.id, key)" class="btn btn-danger btn-xs mr-1">
-                                <i class="fas fa-lock"></i></button>
-                        </td>
-                    </tr>
+                    <template v-if="registeredUsers.length > 0">
+                        <tr v-for="(user, key) in registeredUsers" :key="user.id">
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <select @change="setUserRole(user.id, $event.target.value, key)" class="form-control form-control-xs">
+                                    <option selected>{{ user.role }}</option>
+                                    <option v-for="role in registeredRole" :key="role.id" :value="role.name">{{ role.display_name }}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <i v-if="user.isActivated" class="fas fa-check text-success"></i>
+                                <i v-else class="fas fa-times text-danger"></i>
+                            </td>
+                            <td>
+                                <i v-if="user.isFilled" class="fas fa-check text-success"></i>
+                                <i v-else class="fas fa-times text-danger"></i>
+                            </td>
+                            <td>{{ user.created_at }}</td>
+                            <td>
+                                <button v-if="user.employee" @click="selectThisUser(user)" data-toggle="modal" data-target="#modal-personal" class="btn btn-success btn-xs mr-1">
+                                    <i class="fas fa-search"></i></button>
+                                <button @click="setToDefaultPassword(user.id)" class="btn btn-warning btn-xs mr-1">
+                                    <i class="fas fa-redo"></i></button>
+                                <button @click="selectThisCredit(user?.credits)" data-toggle="modal" data-target="#modal-leave-credits" class="btn btn-primary btn-xs mr-1">
+                                    <i class="fas fa-list-alt"></i></button>
+                                <button v-if="user.isActivated == false" @click="setUserToActive(user.id, key)" class="btn btn-success btn-xs mr-1">
+                                    <i class="fas fa-unlock"></i></button>
+                                <button v-if="user.isActivated == true" @click="setUserToInactive(user.id, key)" class="btn btn-danger btn-xs mr-1">
+                                    <i class="fas fa-lock"></i></button>
+                            </td>
+                        </tr>
+                    </template>
+                    <template v-else>
+                        <tr>
+                            <td colspan="8" class="text-center">No user to display</td>
+                        </tr>
+                    </template>
                 </tbody>
             </table>
         </div>
@@ -329,9 +336,15 @@ export default defineComponent({
         const user = useUserStore()
         const role = useSettingRoleStore();
 
+        const userSearch = ref("");
+
         const usersIsLoading = computed(() => user.getDataIsLoading);
-        const registeredUsers = computed(() => user.getRegisteredUsers);
         const registeredRole = computed(() => role.getAllRoles);
+        const registeredUsers = computed(() => {
+            return user.getRegisteredUsers.filter((user) => {
+                return (user.email.toLowerCase().match(userSearch.value))
+            });
+        });
 
         const selectedUser = ref<UserEmployeeTypes>();
         const toBeUpdatedCredits = ref<UserCreditTypes>({
@@ -349,6 +362,7 @@ export default defineComponent({
             total_special_leave: 0
         });
 
+
         onBeforeMount(async () => {
             await user.loadAllPortalUsers();
             await role.loadAllRoles();
@@ -359,7 +373,7 @@ export default defineComponent({
         }
 
         const selectThisCredit = (credit : UserCreditTypes) => {
-            toBeUpdatedCredits.value = credit
+            toBeUpdatedCredits.value = credit;
         }
 
         const setToDefaultPassword = async (userId : number) => {
@@ -388,6 +402,10 @@ export default defineComponent({
             await user.setUserRole(userId, value, key);
         }
 
+        const searchUser = async () => {
+            await user.searchByEmail(userSearch.value);
+        }
+
         return {
             selectThisUser,
             selectThisCredit,
@@ -396,6 +414,8 @@ export default defineComponent({
             setUserToActive,
             setUserToInactive,
             setUserRole,
+            searchUser,
+            userSearch,
             usersIsLoading,
             toBeUpdatedCredits,
             selectedUser,
