@@ -1,11 +1,5 @@
 <template>
-    <div class="row">
-        <div class="col-12">
-            <div class="alert alert-primary">
-                test
-            </div>
-        </div>
-    </div>
+    
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -37,7 +31,7 @@
                             </tr>
                         </tbody>
                         <tbody v-else>
-                            <tr class="text-center" v-for="(coe, key) in coes" :key="coe.id">
+                            <tr class="text-center" v-for="(coe, key) in coes" :key="coe.id" :class="setRowStatusColor(coe.status)">
                                 <td class="text-left">{{ coe.id }}</td>
                                 <td>{{ coe.employee.first_name }}</td>
                                 <td>{{ coe.employee.last_name }}</td>
@@ -48,8 +42,8 @@
                                     <b v-else>Without Compensation</b>
                                 </td>
                                 <td>
-                                    <i v-if="coe.status == 'Pending'" class="fas fa-exclamation text-warning"></i>
-                                    <i v-if="coe.status == 'Acknowledged'" class="fas fa-check text-success"></i>
+                                    <i v-if="coe.status == 'Pending'" class="fas fa-exclamation"></i>
+                                    <i v-if="coe.status == 'Acknowledged'" class="fas fa-check"></i>
                                 </td>
                                 <td>
                                     <button @click="selectThisRequest(coe, key)" data-toggle="modal" data-target="#modal-lg" class="btn btn-primary btn-sm">
@@ -102,11 +96,13 @@
 </template>
 
 <script lang="ts">
+import useHelpers from '@/composables/helper';
 import { HumanResourceCOETypes, useHumanResourceCOEStore } from '@/store/hr/coe'
 import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 
 export default defineComponent({
     setup() {
+        const { setRowStatusColor } = useHelpers();
         const coe = useHumanResourceCOEStore();
 
         const coes = computed(() => coe.getAllFiledCoes);
@@ -145,7 +141,8 @@ export default defineComponent({
             coes,
             selectedCOE,
             selectThisRequest,
-            acknowledgeRequest
+            acknowledgeRequest,
+            setRowStatusColor
         }
     },
 })

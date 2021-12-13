@@ -1,11 +1,5 @@
 <template>
-    <div class="row">
-        <div class="col-12">
-            <div class="alert alert-primary">
-                jksldfjsl
-            </div>
-        </div>
-    </div>
+    
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -50,7 +44,7 @@
                             </tr>
                         </tbody>
                         <tbody v-else class="text-center">
-                            <tr v-for="(trip, key) in trips" :key="trip.id">
+                            <tr v-for="(trip, key) in trips" :key="trip.id" :class="setRowStatusColor(trip.status)">
                                 <td class="text-left">{{ trip.id }}</td>
                                 <td>{{ trip.employee?.first_name }}</td>
                                 <td>{{ trip.employee?.last_name }}</td>
@@ -61,8 +55,8 @@
                                 <td>{{ trip.destination_from }}</td>
                                 <td>{{ trip.destination_to }}</td>
                                 <td>
-                                    <i v-if="trip.status == 'Pending'" class="fas fa-exclamation text-warning"></i>
-                                    <i v-if="trip.status == 'Acknowledged'" class="fas fa-check text-success"></i>
+                                    <i v-if="trip.status == 'Pending'" class="fas fa-exclamation"></i>
+                                    <i v-if="trip.status == 'Acknowledged'" class="fas fa-check"></i>
                                 </td>
                                 <td>{{ trip.created_at }}</td>
                                 <td>
@@ -131,12 +125,14 @@
 </template>
 
 <script lang="ts">
+import useHelpers from '@/composables/helper';
 import { useHumanResourceTripStore } from '@/store/hr/trip'
 import { SuperadminTripTypes } from '@/store/superadmin/trip';
 import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 
 export default defineComponent({
     setup() {
+        const { setRowStatusColor } = useHelpers();
         const trip = useHumanResourceTripStore();
 
         const selectedKey = ref(0);
@@ -189,7 +185,8 @@ export default defineComponent({
             selectedTrip,
             tripSearch,
             selectTrip,
-            acknowledgedSelectedRequest
+            acknowledgedSelectedRequest,
+            setRowStatusColor
         }
     },
 })

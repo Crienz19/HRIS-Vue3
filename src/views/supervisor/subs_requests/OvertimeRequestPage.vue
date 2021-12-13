@@ -71,7 +71,7 @@
                            </template>
                            <template v-else>
                                <tr>
-                                   <td colspan="10">No record to display</td>
+                                   <td colspan="10" class="text-center">No record to display</td>
                                </tr>
                            </template>
                        </tbody>

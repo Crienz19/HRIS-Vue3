@@ -1,11 +1,5 @@
 <template>
-   <div class="row">
-       <div class="col-12">
-            <div class="alert alert-primary">
-                <h5>Testing</h5>
-            </div>
-       </div>
-   </div>
+   
    <div class="row">
        <div class="col-12">
            <div class="card">
@@ -47,7 +41,7 @@
                            </tr>
                        </tbody>
                        <tbody v-else>
-                           <tr v-for="(ot, key) in overtimes" :key="ot.id">
+                           <tr v-for="(ot, key) in overtimes" :key="ot.id" :class="setRowStatusColor(ot.status)">
                                <td class="text-left">{{ ot.id }}</td>
                                <td>{{ ot.employee.first_name }}</td>
                                <td>{{ ot.employee.last_name }}</td>
@@ -56,9 +50,9 @@
                                <td>{{ ot.to.other }}</td>
                                <td>{{ ot.reason }}</td>
                                <td>
-                                   <i v-if="ot.status == 'Pending'" class="text-warning fas fa fa-exclamation"></i>
-                                   <i v-if="ot.status == 'Approved'" class="text-success fas fa fa-check"></i>
-                                   <i v-if="ot.status == 'Disapproved'" class="text-danger fas fa fa-times"></i>
+                                   <i v-if="ot.status == 'Pending'" class="fas fa fa-exclamation"></i>
+                                   <i v-if="ot.status == 'Approved'" class="fas fa fa-check"></i>
+                                   <i v-if="ot.status == 'Disapproved'" class="fas fa fa-times"></i>
                                </td>
                                <td>{{ ot.created_at }}</td>
                                <td>
@@ -112,12 +106,14 @@
 </template>
 
 <script lang="ts">
+import useHelpers from '@/composables/helper';
 import { useHumanResourceOvertimeStore } from '@/store/hr/overtime'
 import { SupervisorOvertimeTypes } from '@/store/supervisor/overtime';
 import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 
 export default defineComponent({
     setup() {
+        const { setRowStatusColor } = useHelpers();
         const overtime = useHumanResourceOvertimeStore();
 
         const selectedKey = ref(0);
@@ -160,7 +156,8 @@ export default defineComponent({
             overtimes,
             selectedOvertime,
             overtimeSearch,
-            selectThisOvertime
+            selectThisOvertime,
+            setRowStatusColor
         }
     },
 })

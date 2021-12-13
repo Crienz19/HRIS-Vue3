@@ -1,11 +1,5 @@
 <template>
-   <div class="row">
-       <div class="col-12">
-            <div class="alert alert-primary">
-                <h5>Testing</h5>
-            </div>
-       </div>
-   </div>
+   
    <div class="row">
        <div class="col-12">
            <div class="card">
@@ -49,7 +43,7 @@
                            </tr>
                        </tbody>
                        <tbody v-else>
-                           <tr v-for="(leave, key) in leaves" :key="leave.id">
+                           <tr v-for="(leave, key) in leaves" :key="leave.id" :class="setRowStatusColor(leave.final_approval)">
                                <td class="text-left">{{ leave.id }}</td>
                                <td>{{ leave.employee.first_name }}</td>
                                <td>{{ leave.employee.last_name }}</td>
@@ -58,14 +52,14 @@
                                <td>{{ leave.from }}</td>
                                <td>{{ leave.to }}</td>
                                <td>
-                                   <i v-if="leave.recommending_approval == 'Pending'" class="text-warning fas fa fa-exclamation"></i>
-                                   <i v-if="leave.recommending_approval == 'Approved'" class="text-success fas fa fa-check"></i>
-                                   <i v-if="leave.recommending_approval == 'Disapproved'" class="text-danger fas fa fa-times"></i>
+                                   <i v-if="leave.recommending_approval == 'Pending'" class="fas fa fa-exclamation"></i>
+                                   <i v-if="leave.recommending_approval == 'Approved'" class="fas fa fa-check"></i>
+                                   <i v-if="leave.recommending_approval == 'Disapproved'" class="fas fa fa-times"></i>
                                </td>
                                <td>
-                                   <i v-if="leave.final_approval == 'Pending'" class="text-warning fas fa fa-exclamation"></i>
-                                   <i v-if="leave.final_approval == 'Approved'" class="text-success fas fa fa-check"></i>
-                                   <i v-if="leave.final_approval == 'Disapproved'" class="text-danger fas fa fa-times"></i>
+                                   <i v-if="leave.final_approval == 'Pending'" class="fas fa fa-exclamation"></i>
+                                   <i v-if="leave.final_approval == 'Approved'" class="fas fa fa-check"></i>
+                                   <i v-if="leave.final_approval == 'Disapproved'" class="fas fa fa-times"></i>
                                </td>
                                <td>{{ leave.created_at }}</td>
                                <td>
@@ -137,12 +131,14 @@
 </template>
 
 <script lang="ts">
+import useHelpers from '@/composables/helper';
 import { useHumanResourceLeaveStore } from '@/store/hr/leave'
 import { SupervisorLeaveTypes } from '@/store/supervisor/leave';
 import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 
 export default defineComponent({
     setup() {
+        const { setRowStatusColor } = useHelpers();
         const leave = useHumanResourceLeaveStore();
 
         const selectedKey = ref(0);
@@ -206,7 +202,8 @@ export default defineComponent({
             leaveSearch,
             selectThisRequest,
             approveThisRequest,
-            disapproveThisRequest
+            disapproveThisRequest,
+            setRowStatusColor
         }
     },
 })
