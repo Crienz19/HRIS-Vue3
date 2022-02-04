@@ -1,7 +1,7 @@
 <template>
     <Suspense>
         <template #default>              
-            <component :is="EmTrip.active_component"></component>
+            <component :is="getActiveComponent"></component>
         </template>
         <template #fallback>              
             Loading...
@@ -15,18 +15,22 @@ import TripCreateRequestComponent from '@/components/employee/requests/TripCreat
 import TripShowRequestComponent from '@/components/employee/requests/TripShowRequestComponent.vue';
 import { useEmployeeTripStore } from '@/store/employee/trip';
 import { defineComponent, onBeforeMount } from 'vue'
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     setup() {
-        const EmTrip = useEmployeeTripStore();  
+        const EmpTripStore = useEmployeeTripStore();  
+        const { 
+            getActiveComponent 
+        } = storeToRefs(EmpTripStore);
 
         onBeforeMount(async () => {
-            await EmTrip.setComponentTo('trip-request-component');
-            await EmTrip.loadEmployeeTripRequests();
+            await EmpTripStore.setComponentTo('trip-request-component');
+            await EmpTripStore.loadEmployeeTripRequests();
         });
 
         return {
-            EmTrip
+            getActiveComponent
         }
     },
     components: {

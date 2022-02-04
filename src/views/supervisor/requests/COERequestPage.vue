@@ -1,7 +1,7 @@
 <template>
     <Suspense>
         <template #default>
-            <component :is="EmCOE.active_component" />
+            <component :is="getActiveComponent" />
         </template>
         <template #fallback>
             Loading...
@@ -15,18 +15,22 @@ import COECreateRequestComponent from '@/components/employee/requests/COECreateR
 import COEShowRequestComponent from '@/components/employee/requests/COEShowRequestComponent.vue';
 import { useEmployeeCOEStore } from '@/store/employee/coe';
 import { defineComponent, onBeforeMount } from 'vue'
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     setup() {
-        const EmCOE = useEmployeeCOEStore();
+        const EmpCoeStore = useEmployeeCOEStore();
+        const { 
+            getActiveComponent
+        } = storeToRefs(EmpCoeStore);
 
         onBeforeMount(async () => {
-            await EmCOE.setComponentTo('COERequestComponent');
-            await EmCOE.loadEmployeeCOERequest();
+            await EmpCoeStore.setComponentTo('COERequestComponent');
+            await EmpCoeStore.loadEmployeeCOERequest();
         })
 
         return {
-            EmCOE
+            getActiveComponent
         }
     },
     components: {

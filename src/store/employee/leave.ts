@@ -32,6 +32,9 @@ export const useEmployeeLeaveStore = defineStore({
         getLeavesCount() : number {
             return this.leaves.length;
         },
+        getActiveComponent() : string {
+            return this.active_component;
+        },
         getSelectedRequest(): EmployeeLeaveTypes | undefined {
             return this.leaves.find(e => e.id == this.selected_id);
         }

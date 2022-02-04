@@ -25,6 +25,9 @@ export const useEmployeeCOEStore = defineStore({
         getCertCounts() : number {
             return this.certs.length;
         },
+        getActiveComponent() : string {
+            return this.active_component;
+        },
         getSelectedRequest(): EmployeeCOETypes | undefined {
             return this.certs.find(e => e.id == this.selected_id)
         }

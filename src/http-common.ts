@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const http: AxiosInstance = axios.create({
-    baseURL: 'https://hr.ziptravel.com.ph/v1',
+    baseURL: process.env.VUE_APP_ROOT_API,
     withCredentials: true,
     headers: {
         'Accept': 'application/json',

@@ -39,7 +39,7 @@
                                <th>Actions</th>
                            </tr>
                        </thead>
-                       <tbody v-if="overtime.isRequestLoading">
+                       <tbody v-if="getIsRequestLoading">
                            <tr>
                                <td colspan="10">
                                    <i class="fas fa fa-pulse fa-spinner fa-2x"></i>
@@ -84,7 +84,7 @@
    <div class="modal fade show" id="modal-lg" aria-modal="true" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                 <div v-if="overtime.isRequestLoading" class="overlay">
+                 <div v-if="getIsRequestLoading" class="overlay">
                     <i class="fas fa-2x fa-spinner fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -125,14 +125,19 @@
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 import { SupervisorOvertimeTypes, useSupervisorOvertimeStore } from '@/store/supervisor/overtime';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     setup() {
-        const overtime = useSupervisorOvertimeStore();
+        const SupOvertimeStore = useSupervisorOvertimeStore();
+        const { 
+            getSubsOvertimes,
+            getIsRequestLoading
+        } = storeToRefs(SupOvertimeStore);
 
         const overtimeSearch = ref("");
         const overtimes = computed(() => {
-            return overtime.getSubsOvertimes.filter((leave) => {
+            return getSubsOvertimes.value.filter((leave) => {
                 return (leave.employee.last_name.toLowerCase().match(overtimeSearch.value))
             })
         })
@@ -149,7 +154,7 @@ export default defineComponent({
         });
 
         onBeforeMount(async () => {
-            await overtime.loadSubsOvertime();
+            await SupOvertimeStore.loadSubsOvertime();
         })
 
         const selectThisOvertime = (value : SupervisorOvertimeTypes, key : number) => {
@@ -165,17 +170,17 @@ export default defineComponent({
         }
 
         const approveThisRequest = async (requestId : number) => {
-            await overtime.approveSelectedOvertime(requestId, selectedKey.value);
+            await SupOvertimeStore.approveSelectedOvertime(requestId, selectedKey.value);
             document.getElementById('modal-close')?.click();
         }
 
         const disapproveThisRequest = async (requestId : number) => {
-            await overtime.disapproveSelectedOvertime(requestId, selectedKey.value);
+            await SupOvertimeStore.disapproveSelectedOvertime(requestId, selectedKey.value);
             document.getElementById('modal-close')?.click();
         }
 
         return {
-            overtime,
+            getIsRequestLoading,
             overtimes,
             selectedOvertime,
             overtimeSearch,

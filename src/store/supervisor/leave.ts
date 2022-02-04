@@ -28,6 +28,9 @@ export const useSupervisorLeaveStore = defineStore({
     getters: {
         getSubsLeave () : SupervisorLeaveTypes[] {
             return this.leaves;
+        },
+        getIsRequestLoading () : boolean {
+            return this.isRequestLoading;
         }
     },
     actions: {

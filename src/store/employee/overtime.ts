@@ -26,6 +26,9 @@ export const useEmployeeOvertimeStore = defineStore({
         getOvertimeCount() : number {
             return this.overtimes.length;
         },
+        getActiveComponent() : string {
+            return this.active_component;
+        },
         getSelectedRequest(): EmployeeOvertimeTypes | undefined {
             return this.overtimes.find(e => e.id == this.selected_id);
         }

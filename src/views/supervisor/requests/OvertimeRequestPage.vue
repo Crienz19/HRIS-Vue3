@@ -1,7 +1,7 @@
 <template>
     <Suspense>
         <template #default>
-            <component :is="EmOvertime.active_component" />
+            <component :is="getActiveComponent" />
         </template>
         <template #fallback>
             Loading...
@@ -15,18 +15,22 @@ import OvertimeCreateRequestComponent from '@/components/employee/requests/Overt
 import OvertimeShowRequestComponent from '@/components/employee/requests/OvertimeShowRequestComponent.vue';
 import { useEmployeeOvertimeStore } from '@/store/employee/overtime';
 import { defineComponent, onBeforeMount } from 'vue'
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     setup() {
-        const EmOvertime = useEmployeeOvertimeStore();
+        const EmpOvertimeStore = useEmployeeOvertimeStore();
+        const { 
+            getActiveComponent 
+        } = storeToRefs(EmpOvertimeStore);
 
         onBeforeMount(async () => {
-            await EmOvertime.setComponentTo('overtime-request-component');
-            await EmOvertime.loadEmployeeOvertimeRequests();
+            await EmpOvertimeStore.setComponentTo('overtime-request-component');
+            await EmpOvertimeStore.loadEmployeeOvertimeRequests();
         });
 
         return {
-            EmOvertime
+            getActiveComponent
         }
     },
     components: {

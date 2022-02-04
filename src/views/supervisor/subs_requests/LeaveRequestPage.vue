@@ -40,7 +40,7 @@
                                <th>Actions</th>
                            </tr>
                        </thead>
-                       <tbody v-if="leave.isRequestLoading">
+                       <tbody v-if="getIsRequestLoading">
                            <tr>
                                <td colspan="11">
                                    <i class="fas fa fa-pulse fa-spinner fa-2x"></i>
@@ -90,7 +90,7 @@
    <div class="modal fade show" id="modal-lg" aria-modal="true" role="dialog">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div v-if="leave.isRequestLoading" class="overlay">
+                <div v-if="getIsRequestLoading" class="overlay">
                     <i class="fas fa-2x fa-spinner fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -145,17 +145,23 @@
 <script lang="ts">
 import { computed, defineComponent, onBeforeMount, ref } from 'vue'
 import { SupervisorLeaveTypes, useSupervisorLeaveStore } from '@/store/supervisor/leave';
+import { storeToRefs } from 'pinia';
 
 export default defineComponent({
     setup() {
-        const leave = useSupervisorLeaveStore();
+        const SupLeaveStore = useSupervisorLeaveStore();
+        const {
+            getSubsLeave,
+            getIsRequestLoading,
+        } = storeToRefs(SupLeaveStore);
 
         const leaveSearch = ref("");
         const leaves = computed(() => {
-            return leave.getSubsLeave.filter((leave) => {
+            return getSubsLeave.value.filter((leave) => {
                 return (leave.employee.last_name.toLowerCase().match(leaveSearch.value))
             })
         });
+
         const selectedKey = ref(0);
         const selectedLeave = ref({
             id: 0,
@@ -173,7 +179,7 @@ export default defineComponent({
         });
 
         onBeforeMount(async () => {
-            await leave.loadSubsLeave();
+            await SupLeaveStore.loadSubsLeave();
         })
 
         const selectThisRequest = async (value : SupervisorLeaveTypes, key : number) => {
@@ -194,20 +200,20 @@ export default defineComponent({
 
 
         const approveThisRequest = async (requestId : number) => {
-            await leave.approveSelectedLeave(requestId, selectedKey.value);
+            await SupLeaveStore.approveSelectedLeave(requestId, selectedKey.value);
             await document.getElementById('modal-close')?.click();
         }
 
         const disapproveThisRequest = async (requestId : number) => {
-            await leave.disapproveSelectedLeave(requestId, selectedKey.value);
+            await SupLeaveStore.disapproveSelectedLeave(requestId, selectedKey.value);
             await document.getElementById('modal-close')?.click();
         }
 
         return {
-            leave,
             leaves,
             selectedLeave,
             leaveSearch,
+            getIsRequestLoading,
             selectThisRequest,
             approveThisRequest,
             disapproveThisRequest

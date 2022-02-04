@@ -34,6 +34,9 @@ export const useEmployeeTripStore = defineStore({
         getTripCounts() : number {
             return this.trips.length;
         },
+        getActiveComponent() : string {
+            return this.active_component;
+        },
         getSelectedRequest() : EmployeeTripTypes | undefined{
             return this.trips.find(e => e.id == this.selected_id);
         }

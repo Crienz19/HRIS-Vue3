@@ -27,6 +27,9 @@ export const useSupervisorOvertimeStore = defineStore({
     getters: {
         getSubsOvertimes () : SupervisorOvertimeTypes[] {
             return this.overtimes;
+        },
+        getIsRequestLoading() : boolean {
+            return this.isRequestLoading;
         }
     },
     actions: {

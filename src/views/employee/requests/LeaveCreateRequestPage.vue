@@ -32,6 +32,8 @@
                                     <option value="VL - Half">VL - Half</option>
                                     <option value="SL - Half">SL - Half</option>
                                     <option value="PTO - Half">PTO - Half</option>
+                                    <option value="Special">Special Leave</option>
+                                    <option value="Special - Half">Special Half Leave</option>
                                 </select>
                             </div>
                             <div class="form-group col-12 col-md-6">
